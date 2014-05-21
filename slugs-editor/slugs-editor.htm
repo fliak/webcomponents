@@ -1,0 +1,36 @@
+<link rel="import" href="/bundles/acmepolymer/bower_components/polymer/polymer.html">
+<link rel="import" href="/bundles/acmepolymer/bower_components/polymer-ajax/polymer-ajax.html">
+
+
+<polymer-element name="slugs-editor" extends="input" attributes="name value variablePattern slugs adminId fieldName blocks discoverBlockRoute">
+    <template bind="{{ slugs }}">
+        <ul id="slugs">
+            <template bind="{{ slugs }}" repeat="{{slug, slugIndex in slugs }}">
+                <li slugIndex="{{ slugIndex }}">
+                    <input type="checkbox" class="slug-mark" />
+                    <input type="text" value="{{ slug.name }}" />
+                    default value:
+                    <input type="text" name="{{ adminId }}[defaults][{{ slug.name }}]" value="{{ slug.default }}" />
+
+                    <ul>
+                        <template id="links" repeat="{{ link, linkIndex in slug.links }}">
+                            <li>
+                                {{ link.blockPlace }} - {{ link.originParamName }} [{{link.transformerService}}]
+                                <button on-click="{{ detachParam }}" linkIndex="{{ linkIndex }}" type="button" class="btn btn-mini">detach</button>
+                                <button on-click="{{ removeParam }}" linkIndex="{{ linkIndex }}" type="button" class="btn btn-mini">remove</button>
+                            </li>
+                        </template>
+                    </ul>
+
+                </li>
+            </template>
+        </ul>
+        <div class="btn-toolbar" style="display: {{ {none: slugs.length == 0} | tokenList }};">
+            <button on-click="{{ mergeSlugs }}" type="button" class="btn">Merge</button>
+            <button on-click="{{ removeSlug }}" type="button" class="btn">Remove</button>
+        </div>
+
+
+    </template>
+    <script type="text/javascript" src="slugs-editor.js"></script>
+</polymer-element>
